@@ -109,6 +109,15 @@ public class PruebaAsignacion {
         } catch (IllegalStateException e) {
             verificar("manual: paquete ya asignado se rechaza", true);
         }
+    //LA ENTREGA DE UN PAQUETE LIBERA AL REPARTIDOR Y PERMITE ASIGNAR OTRO PAQUETE
+        verificar("entrega: PQ001", c.registrarEntrega("PQ001"));
+        verificar("entrega: R1 vuelve a estar disponible", c.consultarRepartidor("R1").isDisponible());
+        verificar("entrega: PQ001 ya no tiene repartidor", c.repartidorAsignadoA("PQ001") == null);
+        a = c.asignarPorPrioridad();
+        verificar("prioridad: ahora PQ005 va a R1",
+                a != null && a.getPaquete().getCodigo().equals("PQ005")
+                        && a.getRepartidor().getIdentificacion().equals("R1"));
+
 
     }
 
