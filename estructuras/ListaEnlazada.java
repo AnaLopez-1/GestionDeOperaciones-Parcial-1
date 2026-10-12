@@ -38,4 +38,44 @@ public class ListaEnlazada<T> implements Coleccion<T>, Iterable<T> {
         ultimo = nuevo;
         tamanio++;
     }
+
+        @Override
+    public boolean eliminar(T elemento) {
+        if (elemento == null) {
+            return false;
+        }
+        Nodo<T> anterior = null;
+        Nodo<T> actual = primero;
+        while (actual != null) {
+            if (actual.valor.equals(elemento)) {
+                if (anterior == null) {
+                    primero = actual.siguiente;
+                } else {
+                    anterior.siguiente = actual.siguiente;
+                }
+                if (actual == ultimo) {
+                    ultimo = anterior;
+                }
+                tamanio--;
+                return true;
+            }
+            anterior = actual;
+            actual = actual.siguiente;
+        }
+        return false;
+    }
+
+
+    @Override
+    public T obtener(int posicion) {
+        if (posicion < 0 || posicion >= tamanio) {
+            throw new IndexOutOfBoundsException(
+                    "Posición " + posicion + " inválida; tamaño = " + tamanio);
+        }
+        Nodo<T> actual = primero;
+        for (int i = 0; i < posicion; i++) {
+            actual = actual.siguiente;
+        }
+        return actual.valor;
+    }
 }
