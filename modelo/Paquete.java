@@ -68,5 +68,12 @@ public class Paquete implements Comparable<Paquete>{
     public int hashCode() {
         return codigo.hashCode();
     }
+
+    @Override
+    public String toString() {
+        return codigo + " -> " + destino
+                + " (" + peso + " kg, prioridad " + prioridad
+                + ", " + tiempoEstimado + " min)";
+    }
 }
 
