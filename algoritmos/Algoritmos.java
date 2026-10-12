@@ -71,16 +71,16 @@ public final class Algoritmos {
 
 
     private static Paquete mayorPeso(List<Paquete> paquetes, int inicio, int fin) {
-        if (inicio >= fin) {
+        if (inicio == fin) {
             return paquetes.get(inicio);
         }
 
-        int medio = (inicio + fin) / 2;
+        int medio = inicio + (fin - inicio) / 2;
 
         Paquete mayorIzquierdo = mayorPeso(paquetes, inicio, medio);
-        Paquete mayorDerecho = mayorPeso(paquetes, medio, fin);
+        Paquete mayorDerecho = mayorPeso(paquetes, medio + 1, fin);
 
-        if (mayorIzquierdo.getPeso() > mayorDerecho.getPeso()) {
+        if (mayorIzquierdo.getPeso() >= mayorDerecho.getPeso()) {
             return mayorIzquierdo;
         }
         return mayorDerecho;
