@@ -11,9 +11,15 @@ public final class ComparadoresPaquete {
     public static final Comparator<Paquete> POR_TIEMPO_ASC = (a, b) -> Integer.compare(a.getTiempoEstimado(), b.getTiempoEstimado());
 
     public static final Comparator<Paquete> DESPACHO = (a, b) -> {
-    if (b.getPrioridad() != a.getPrioridad()) {
-        return b.getPrioridad() - a.getPrioridad();
-    }
-    return a.getTiempoEstimado() - b.getTiempoEstimado();
+        int resultado = Integer.compare(b.getPrioridad(), a.getPrioridad());
+        if (resultado != 0) {
+            return resultado;
+        }
+        resultado = Integer.compare(a.getTiempoEstimado(), b.getTiempoEstimado());
+        if (resultado != 0) {
+            return resultado;
+        }
+
+        return a.getCodigo().compareTo(b.getCodigo());
     };
 }
