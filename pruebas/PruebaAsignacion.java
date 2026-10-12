@@ -118,6 +118,15 @@ public class PruebaAsignacion {
                 a != null && a.getPaquete().getCodigo().equals("PQ005")
                         && a.getRepartidor().getIdentificacion().equals("R1"));
 
+    //REPARTIDOR VUELVE A ESTAR DISPONIBLE Y SE ASIGNA EL PAQUETE QUE ESTABA BLOQUEADO
+        c.consultarRepartidor("R3").setDisponible(true); 
+        a = c.asignarPorLlegada(); 
+        verificar("llegada: con R3 disponible, PQ002 se asigna a R3",
+                a != null && a.getPaquete().getCodigo().equals("PQ002") 
+                        && a.getRepartidor().getIdentificacion().equals("R3"));
+        verificar("ya no quedan paquetes por asignar",
+                c.asignarPorLlegada() == null && c.asignarPorPrioridad() == null); 
+        verificar("4 asignaciones activas", c.cantidadAsignaciones() == 4); 
 
     }
 
