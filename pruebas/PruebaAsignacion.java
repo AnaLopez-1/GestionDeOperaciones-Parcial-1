@@ -74,7 +74,23 @@ public class PruebaAsignacion {
         verificar("manual: las asignaciones rechazadas no cambiaron nada",
                 c.cantidadAsignaciones() == 0 && c.consultarRepartidor("R1").isDisponible());
 
-    
+    //ASIGNACION AUTOMATICA POR LLEGADA
+        Asignacion a = c.asignarPorLlegada();
+        verificar("llegada: PQ001 va a R1 (primer repartidor libre de Armenia)", 
+        verificar("llegada: R1 queda no disponible", !c.consultarRepartidor("R1").isDisponible());
+        verificar("llegada: repartidorAsignadoA(PQ001) = R1",
+                c.repartidorAsignadoA("PQ001") == c.consultarRepartidor("R1"));
+        verificar("llegada: PQ001 salio de la cola, el siguiente es PQ002",
+                c.siguientePorLlegada().getCodigo().equals("PQ002"));
+
+        a = c.asignarPorLlegada();  
+        verificar("llegada: se omite PQ002 (Salento sin repartidor) y se asigna PQ003 a R4",
+                a != null && a.getPaquete().getCodigo().equals("PQ003")
+                        && a.getRepartidor().getIdentificacion().equals("R4"));
+        verificar("llegada: el omitido PQ002 conserva su lugar",
+                c.siguientePorLlegada().getCodigo().equals("PQ002"));
+
+
     }
 
 }
