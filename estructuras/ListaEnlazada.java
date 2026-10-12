@@ -23,4 +23,19 @@ public class ListaEnlazada<T> implements Coleccion<T>, Iterable<T> {
         this.ultimo = null;
         this.tamanio = 0;
     }
+
+        @Override
+    public void agregar(T elemento) {
+        if (elemento == null) {
+            throw new IllegalArgumentException("No se permiten elementos nulos");
+        }
+        Nodo<T> nuevo = new Nodo<>(elemento);
+        if (primero == null) {
+            primero = nuevo;
+        } else {
+            ultimo.siguiente = nuevo;
+        }
+        ultimo = nuevo;
+        tamanio++;
+    }
 }
