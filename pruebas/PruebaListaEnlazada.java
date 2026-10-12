@@ -74,5 +74,36 @@ public class PruebaListaEnlazada {
         l = lista123();
         verificar("inexistente: eliminar 99 devuelve false", !l.eliminar(99));
         verificar("inexistente: tamanio sigue en 3", l.tamanio() == 3);
+
+        // 7. Iterador: next() sin elementos y recorrido completo
+        Iterator<Integer> it = l.iterator();
+        int suma = 0;
+        while (it.hasNext()) {
+            suma += it.next();
+        }
+        verificar("iterador: recorre todo (suma 6)", suma == 6);
+        try {
+            it.next();
+            verificar("iterador: next() al final lanza excepcion", false);
+        } catch (NoSuchElementException e) {
+            verificar("iterador: next() al final lanza excepcion", true);
+        }
+
+
+        // 8. Genericidad: la misma lista con Paquete, recorrida con for-each
+        ListaEnlazada<Paquete> historial = new ListaEnlazada<>();
+        historial.agregar(new Paquete("PQ105", "Salento", 3.0, 4, 25));
+        historial.agregar(new Paquete("PQ942", "Armenia", 2.0, 5, 20));
+        historial.agregar(new Paquete("PQ731", "Armenia", 7.5, 3, 45));
+        StringBuilder orden = new StringBuilder();
+        for (Paquete p : historial) {
+            orden.append(p.getCodigo()).append(' ');
+        }
+        verificar("generica: historial conserva orden de entrega",
+                orden.toString().trim().equals("PQ105 PQ942 PQ731"));
+
+        System.out.println();
+        System.out.println(fallos == 0 ? "Todas las pruebas pasaron."
+        : "Pruebas fallidas: " + fallos);
     }
 }
