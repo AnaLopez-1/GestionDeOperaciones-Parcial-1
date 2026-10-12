@@ -31,8 +31,34 @@ public final class Algoritmos {
         if (indice == paquetes.size()) {
             return 0;
         }
-        
+
         int este = paquetes.get(indice).getPrioridad() >= prioridadMinima ? 1 : 0;
         return este + contar(paquetes, prioridadMinima, indice + 1);
+    }
+
+        public static int busquedaBinaria(List<Paquete> ordenados, String codigo) {
+        int bajo = 0;
+        int alto = ordenados.size() - 1;
+        while (bajo <= alto) {
+            int medio = bajo + (alto - bajo) / 2;
+            int comparacion = codigo.compareTo(ordenados.get(medio).getCodigo());
+            if (comparacion == 0) {
+                return medio;
+            } else if (comparacion < 0) {
+                alto = medio - 1;
+            } else {
+                bajo = medio + 1;
+            }
+        }
+        return -1;
+    }
+
+    public static boolean estaOrdenadaPorCodigo(List<Paquete> paquetes) {
+        for (int i = 1; i < paquetes.size(); i++) {
+            if (paquetes.get(i - 1).compareTo(paquetes.get(i)) > 0) {
+                return false;
+            }
+        }
+        return true;
     }
 }
