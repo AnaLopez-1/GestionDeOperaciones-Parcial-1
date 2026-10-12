@@ -22,4 +22,17 @@ public final class Algoritmos {
         double aporte = actual.getDestino().equals(municipio) ? actual.getPeso() : 0.0;
         return aporte + pesoTotal(paquetes, municipio, indice + 1);
     }
+
+        public static int contarConPrioridadMinima(List<Paquete> paquetes, int prioridadMinima) {
+        return contar(paquetes, prioridadMinima, 0);
+    }
+
+    private static int contar(List<Paquete> paquetes, int prioridadMinima, int indice) {
+        if (indice == paquetes.size()) {
+            return 0;
+        }
+        
+        int este = paquetes.get(indice).getPrioridad() >= prioridadMinima ? 1 : 0;
+        return este + contar(paquetes, prioridadMinima, indice + 1);
+    }
 }
