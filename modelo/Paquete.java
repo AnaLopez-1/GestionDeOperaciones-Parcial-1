@@ -38,4 +38,17 @@ public class Paquete {
         this.prioridad = prioridad;
         this.tiempoEstimado = tiempoEstimado;
     }
+
+    // Constructor sobrecargado con prioridad por defecto
+    public Paquete(String codigo, String destino, double peso, int tiempoEstimado) {
+        this(codigo, destino, peso, PRIORIDAD_POR_DEFECTO, tiempoEstimado);
+    }
+
+    // Métodos consultores (Getters)
+    public String getCodigo() { return codigo; }
+    public String getDestino() { return destino; }
+    public double getPeso() { return peso; }
+    public int getPrioridad() { return prioridad; }
+    public int getTiempoEstimado() { return tiempoEstimado; }
 }
+
