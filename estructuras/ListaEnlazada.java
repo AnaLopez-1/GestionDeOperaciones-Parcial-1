@@ -79,9 +79,9 @@ public class ListaEnlazada<T> implements Coleccion<T>, Iterable<T> {
         return actual.valor;
     }
 
-        @Override
-    public Iterator<T> iterator() { // Cumple con el contrato de la interfaz Iterable entregando una instancia del iterador propio[cite: 2, 3]
-        return new IteradorLista(); // Instancia y devuelve el iterador que recorrerá los nodos de la lista[cite: 3]
+    @Override
+    public Iterator<T> iterator() {
+        return new IteradorLista();
     }
 
     private class IteradorLista implements Iterator<T> {
@@ -91,12 +91,12 @@ public class ListaEnlazada<T> implements Coleccion<T>, Iterable<T> {
         public boolean hasNext() {
             return actual != null;
         }
-    }
 
         @Override
         public T next() {
             if (actual == null) {
                 throw new NoSuchElementException("No quedan más elementos");
+            }
             T valor = actual.valor;
             actual = actual.siguiente;
             return valor;
