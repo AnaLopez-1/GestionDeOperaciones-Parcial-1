@@ -82,4 +82,20 @@ public class CentroDistribucion {
     public int cantidadPendientes() {
         return pendientes.size();
     }
+
+        public Set<String> getMunicipios() {
+        return Collections.unmodifiableSet(municipios);
+    }
+
+    public Set<String> getMunicipiosOrdenados() {
+        return Collections.unmodifiableSet(municipiosOrdenados);
+    }
+
+    public List<Paquete> paquetesDeMunicipio(String municipio) {
+        List<Paquete> lista = paquetesPorMunicipio.get(municipio);
+        if (lista == null) {
+            return Collections.emptyList();
+        }
+        return Collections.unmodifiableList(lista);
+    }
 }
