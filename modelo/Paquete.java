@@ -55,5 +55,18 @@ public class Paquete implements Comparable<Paquete>{
     public int compareTo(Paquete otro) { //Compara el código de los paquetes para determinar su orden alfabético
         return this.codigo.compareTo(otro.codigo);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Paquete)) return false;
+        Paquete otro = (Paquete) o;
+        return codigo.equals(otro.codigo);
+    }
+
+    @Override
+    public int hashCode() {
+        return codigo.hashCode();
+    }
 }
 
