@@ -103,5 +103,27 @@ public class ListaEnlazada<T> implements Coleccion<T>, Iterable<T> {
         }
     }
 
-    
+        @Override
+    public int tamanio() {
+        return tamanio;
+    }
+
+    @Override
+    public boolean estaVacia() {
+        return tamanio == 0;
+    }
+
+        @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder("[");
+        boolean primeraVez = true;
+        for (T elemento : this) {
+            if (!primeraVez) {
+                sb.append(" -> ");
+            }
+            sb.append(elemento);
+            primeraVez = false;
+        }
+        return sb.append("]").toString();
+    }
 }
