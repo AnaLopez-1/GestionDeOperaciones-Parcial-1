@@ -31,4 +31,23 @@ public class Repartidor {
     public void setDisponible(boolean disponible) {
         this.disponible = disponible;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Repartidor)) return false;
+        Repartidor otro = (Repartidor) o;
+        return identificacion.equals(otro.identificacion);
+    }
+
+    @Override
+    public int hashCode() {
+        return identificacion.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return identificacion + " - " + nombre + " (zona " + zona
+                + ", " + (disponible ? "disponible" : "no disponible") + ")";
+    }
 }
