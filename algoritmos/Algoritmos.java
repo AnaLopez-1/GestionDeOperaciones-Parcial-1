@@ -13,16 +13,13 @@ public final class Algoritmos {
     }
 
 
-private static double pesoTotal(List<Paquete> paquetes, String municipio, int indice) {
-    if (indice > paquetes.size()) {
-        return 0.0;
-    }
-    
-    double suma = 0.0;
-    if (paquetes.get(indice).getDestino().equals(municipio)) {
-        suma += paquetes.get(indice).getPeso();
-    }
-    // Provocaba IndexOutOfBoundsException en el último elemento
-    return suma + pesoTotal(paquetes, municipio, indice++);
+    private static double pesoTotal(List<Paquete> paquetes, String municipio, int indice) {
+        if (indice == paquetes.size()) {
+            return 0.0;
+        }
+
+        Paquete actual = paquetes.get(indice);
+        double aporte = actual.getDestino().equals(municipio) ? actual.getPeso() : 0.0;
+        return aporte + pesoTotal(paquetes, municipio, indice + 1);
     }
 }
