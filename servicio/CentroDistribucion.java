@@ -239,5 +239,45 @@ public class CentroDistribucion {
         return a;
     }
 
-    
+    /**
+     * @return true si el paquete estaba pendiente; false si no existe
+     */
+
+    public boolean registrarEntrega(String codigo) {
+        Paquete paquete = paquetesPorCodigo.remove(codigo);
+        if (paquete == null) {
+            return false;
+        }
+        pendientes.remove(paquete);
+
+        Asignacion asignacion = asignaciones.remove(codigo);
+        if (asignacion != null) {
+            asignacion.getRepartidor().setDisponible(true);
+        }
+
+        colaLlegada.remove(paquete);
+        colaPrioridad.remove(paquete);
+        quitarDeMunicipio(paquete);
+        historial.agregar(paquete);
+        return true;
+    }
+
+    private void quitarDeMunicipio(Paquete paquete) {
+        String destino = paquete.getDestino();
+        List<Paquete> delMunicipio = paquetesPorMunicipio.get(destino);
+        delMunicipio.remove(paquete);
+        if (delMunicipio.isEmpty()) {
+            paquetesPorMunicipio.remove(destino);
+            municipios.remove(destino);
+            municipiosOrdenados.remove(destino);
+        }
+    }
+
+    public Iterable<Paquete> getHistorial() {
+        return historial;
+    }
+
+    public int cantidadEntregados() {
+        return historial.tamanio();
+    }
 }
