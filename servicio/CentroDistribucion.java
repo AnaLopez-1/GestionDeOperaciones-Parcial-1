@@ -98,4 +98,20 @@ public class CentroDistribucion {
         }
         return Collections.unmodifiableList(lista);
     }
+
+        public List<Paquete> pendientesEnOrdenDeRegistro() {
+        return Collections.unmodifiableList(pendientes);
+    }
+
+    public List<Paquete> pendientesOrdenadosPor(Comparator<Paquete> criterio) {
+        List<Paquete> copia = new ArrayList<>(pendientes);
+        copia.sort(criterio);
+        return copia;
+    }
+
+    public List<Paquete> pendientesPorOrdenNatural() {
+        List<Paquete> copia = new ArrayList<>(pendientes);
+        Collections.sort(copia);
+        return copia;
+    }
 }
