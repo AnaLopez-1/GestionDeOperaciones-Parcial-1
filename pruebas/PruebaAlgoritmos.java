@@ -103,5 +103,39 @@ public class PruebaAlgoritmos {
         verificar("tras ordenar la copia, PQ318 si se encuentra (posicion 1)", 
                 Algoritmos.busquedaBinaria(copiaOrdenada, "PQ318") == 1);
 
+        // 4. Mayor peso (divide y vencerás) 
+        double[] valores = {4.5, 12.0, 3.2, 18.7, 7.4, 5.1}; 
+        List<Paquete> conPeso = new ArrayList<>(); 
+        for (int i = 0; i < valores.length; i++) { 
+            conPeso.add(pq("PQ" + (200 + i), "Armenia", valores[i], 3)); 
+        }
+        verificar("mayor peso = 18.7 kg", 
+                casiIgual(Algoritmos.paqueteMayorPeso(conPeso).getPeso(), 18.7));
+        verificar("mayor peso es PQ203", 
+                Algoritmos.paqueteMayorPeso(conPeso).getCodigo().equals("PQ203"));
+        verificar("mayor peso con un solo paquete",
+                Algoritmos.paqueteMayorPeso(Arrays.asList(pq("PQ300", "Armenia", 2.0, 3)))
+                        .getCodigo().equals("PQ300"));
+        List<Paquete> empate = Arrays.asList( 
+                pq("PQ401", "Armenia", 5.0, 3), pq("PQ402", "Armenia", 5.0, 3),
+                pq("PQ403", "Armenia", 1.0, 3));
+        verificar("empate de peso: gana el primero de la lista", 
+                Algoritmos.paqueteMayorPeso(empate).getCodigo().equals("PQ401"));
+        verificar("mayor peso en el ultimo lugar", 
+                Algoritmos.paqueteMayorPeso(Arrays.asList(
+                        pq("PQ501", "Armenia", 1.0, 3), pq("PQ502", "Armenia", 2.0, 3),
+                        pq("PQ503", "Armenia", 9.0, 3))).getCodigo().equals("PQ503"));
+        try {
+            Algoritmos.paqueteMayorPeso(new ArrayList<Paquete>()); 
+            verificar("mayor peso con lista vacia lanza excepcion", false); 
+        } catch (IllegalArgumentException e) { 
+            verificar("mayor peso con lista vacia lanza excepcion", true); 
+        }
+
+        System.out.println(); 
+        System.out.println(fallos == 0 ? "Todas las pruebas pasaron."
+        : "Pruebas fallidas: " + fallos); 
+        }
 }
-}
+
+
