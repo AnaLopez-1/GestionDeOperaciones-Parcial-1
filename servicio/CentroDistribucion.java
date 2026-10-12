@@ -114,4 +114,130 @@ public class CentroDistribucion {
         Collections.sort(copia);
         return copia;
     }
+
+    public Paquete siguientePorLlegada() {
+        return colaLlegada.peek();
+    }
+
+    public Paquete siguientePrioritario() {
+        return colaPrioridad.peek();
+    }
+
+    public Paquete despacharPorLlegada() {
+        Paquete paquete = colaLlegada.poll();
+        if (paquete != null) {
+            colaPrioridad.remove(paquete);
+        }
+        return paquete;
+    }
+
+    public Paquete despacharPorPrioridad() {
+        Paquete paquete = colaPrioridad.poll();
+        if (paquete != null) {
+            colaLlegada.remove(paquete);
+        }
+        return paquete;
+    }
+
+    /**
+     * @throws IllegalArgumentException si es nulo o la identificación ya existe
+     */
+
+    public void registrarRepartidor(Repartidor repartidor) {
+        if (repartidor == null) {
+            throw new IllegalArgumentException("El repartidor no puede ser nulo");
+        }
+        if (repartidores.containsKey(repartidor.getIdentificacion())) {
+            throw new IllegalArgumentException("Ya existe un repartidor con la identificación " + repartidor.getIdentificacion());
+        }
+        repartidores.put(repartidor.getIdentificacion(), repartidor);
+    }
+
+    public Repartidor consultarRepartidor(String identificacion) {
+        return repartidores.get(identificacion);
+    }
+
+    public Collection<Repartidor> getRepartidores() {
+        return Collections.unmodifiableCollection(repartidores.values());
+    }
+
+    public int cantidadAsignaciones() {
+        return asignaciones.size();
+    }
+
+    public Repartidor repartidorAsignadoA(String codigoPaquete) {
+        Asignacion a = asignaciones.get(codigoPaquete);
+        return a == null ? null : a.getRepartidor();
+    }
+
+    /**
+     * @throws IllegalArgumentException
+     * @throws IllegalStateException
+     */
+
+    public Asignacion asignar(String codigoPaquete, String idRepartidor) {
+        Paquete paquete = paquetesPorCodigo.get(codigoPaquete);
+        if (paquete == null) {
+            throw new IllegalArgumentException("No existe el paquete " + codigoPaquete);
+        }
+        Repartidor repartidor = repartidores.get(idRepartidor);
+        if (repartidor == null) {
+            throw new IllegalArgumentException("No existe el repartidor " + idRepartidor);
+        }
+        if (asignaciones.containsKey(codigoPaquete)) {
+            throw new IllegalStateException("El paquete " + codigoPaquete + " ya está asignado");
+        }
+        if (!repartidor.isDisponible()) {
+            throw new IllegalStateException("El repartidor " + idRepartidor + " no está disponible");
+        }
+        if (!repartidor.getZona().equals(paquete.getDestino())) {
+            throw new IllegalStateException("La zona del repartidor no coincide con el destino");
+        }
+        return crearAsignacion(paquete, repartidor);
+    }
+
+    public Asignacion asignarPorLlegada() {
+        for (Paquete p : colaLlegada) {
+            Repartidor r = repartidorLibreParaZona(p.getDestino());
+            if (r != null) {
+                return crearAsignacion(p, r);
+            }
+        }
+        return null;
+    }
+
+    public Asignacion asignarPorPrioridad() {
+        List<Paquete> orden = new ArrayList<>(colaPrioridad);
+        orden.sort(ComparadoresPaquete.DESPACHO);
+        for (Paquete p : orden) {
+            Repartidor r = repartidorLibreParaZona(p.getDestino());
+            if (r != null) {
+                return crearAsignacion(p, r);
+            }
+        }
+        return null;
+    }
+
+    private Repartidor repartidorLibreParaZona(String zona) {
+        List<String> ids = new ArrayList<>(repartidores.keySet());
+        Collections.sort(ids);
+        for (String id : ids) {
+            Repartidor r = repartidores.get(id);
+            if (r.isDisponible() && r.getZona().equals(zona)) {
+                return r;
+            }
+        }
+        return null;
+    }
+
+    private Asignacion crearAsignacion(Paquete paquete, Repartidor repartidor) {
+        Asignacion a = new Asignacion(paquete, repartidor);
+        asignaciones.put(paquete.getCodigo(), a);
+        repartidor.setDisponible(false);
+        colaLlegada.remove(paquete);
+        colaPrioridad.remove(paquete);
+        return a;
+    }
+
+    
 }
