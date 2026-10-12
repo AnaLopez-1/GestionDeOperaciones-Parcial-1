@@ -1,6 +1,6 @@
 package modelo;
 
-public class Paquete {
+public class Paquete implements Comparable<Paquete>{
 
     // Define constantes
     public static final int PRIORIDAD_MIN = 1;
@@ -50,5 +50,10 @@ public class Paquete {
     public double getPeso() { return peso; }
     public int getPrioridad() { return prioridad; }
     public int getTiempoEstimado() { return tiempoEstimado; }
+
+    @Override
+    public int compareTo(Paquete otro) { //Compara el código de los paquetes para determinar su orden alfabético
+        return this.codigo.compareTo(otro.codigo);
+    }
 }
 
