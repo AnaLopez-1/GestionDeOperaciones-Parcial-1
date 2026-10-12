@@ -56,6 +56,52 @@ public class PruebaAlgoritmos {
         verificar("prioridad >= 5 -> 2 paquetes", 
                 Algoritmos.contarConPrioridadMinima(conPrioridad, 5) == 2);
         verificar("contar con lista vacia = 0", 
-                Algoritmos.contarConPrioridadMinima(new ArrayList<Paquete>(), 3) == 0);        
+                Algoritmos.contarConPrioridadMinima(new ArrayList<Paquete>(), 3) == 0);  
+
+        // 3. Busqueda binaria
+        List<Paquete> ordenados = Arrays.asList( 
+                pq("PQ105", "Armenia", 1.0, 3), pq("PQ214", "Armenia", 1.0, 3),
+                pq("PQ318", "Armenia", 1.0, 3), pq("PQ421", "Armenia", 1.0, 3),
+                pq("PQ567", "Armenia", 1.0, 3), pq("PQ731", "Armenia", 1.0, 3),
+                pq("PQ842", "Armenia", 1.0, 3), pq("PQ942", "Armenia", 1.0, 3));
+        verificar("la lista de reporte cumple la precondicion", 
+                Algoritmos.estaOrdenadaPorCodigo(ordenados));
+        verificar("busqueda: PQ731 esta en la posicion 5", 
+                Algoritmos.busquedaBinaria(ordenados, "PQ731") == 5);
+        verificar("busqueda: primero (PQ105) -> 0", 
+                Algoritmos.busquedaBinaria(ordenados, "PQ105") == 0);
+        verificar("busqueda: ultimo (PQ942) -> 7", 
+                Algoritmos.busquedaBinaria(ordenados, "PQ942") == 7);
+        verificar("busqueda: menor que todos -> -1", 
+                Algoritmos.busquedaBinaria(ordenados, "PQ001") == -1);
+        verificar("busqueda: mayor que todos -> -1", 
+                Algoritmos.busquedaBinaria(ordenados, "PQ999") == -1);
+        verificar("busqueda: intermedio inexistente -> -1", 
+                Algoritmos.busquedaBinaria(ordenados, "PQ500") == -1);
+        verificar("busqueda: lista vacia -> -1", 
+                Algoritmos.busquedaBinaria(new ArrayList<Paquete>(), "PQ105") == -1);
+        List<Paquete> uno = Arrays.asList(pq("PQ105", "Armenia", 1.0, 3)); 
+        verificar("busqueda: un solo elemento (existe y no existe)", 
+                Algoritmos.busquedaBinaria(uno, "PQ105") == 0
+                        && Algoritmos.busquedaBinaria(uno, "PQ106") == -1);
+
+        // Sin la precondicion, la busqueda binaria falla aunque el dato exista
+        List<Paquete> desordenados = Arrays.asList( 
+                pq("PQ731", "Armenia", 1.0, 3), pq("PQ105", "Armenia", 1.0, 3),
+                pq("PQ942", "Armenia", 1.0, 3), pq("PQ318", "Armenia", 1.0, 3));
+        verificar("desordenada: no cumple la precondicion", 
+                !Algoritmos.estaOrdenadaPorCodigo(desordenados));
+        verificar("desordenada: PQ318 existe pero la busqueda binaria da -1", 
+                Algoritmos.busquedaBinaria(desordenados, "PQ318") == -1);
+
+        // Flujo real: ordenar una copia con el orden natural y buscar
+        CentroDistribucion centro = new CentroDistribucion(); 
+        for (Paquete p : desordenados) { 
+            centro.registrarPaquete(p); 
+        }
+        List<Paquete> copiaOrdenada = centro.pendientesPorOrdenNatural(); 
+        verificar("tras ordenar la copia, PQ318 si se encuentra (posicion 1)", 
+                Algoritmos.busquedaBinaria(copiaOrdenada, "PQ318") == 1);
+
 }
 }
