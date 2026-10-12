@@ -61,4 +61,28 @@ public final class Algoritmos {
         }
         return true;
     }
+
+    public static Paquete paqueteMayorPeso(List<Paquete> paquetes) {
+        if (paquetes == null || paquetes.isEmpty()) {
+            throw new IllegalArgumentException("No hay paquetes para comparar");
+        }
+        return mayorPeso(paquetes, 0, paquetes.size() - 1);
+    }
+
+
+    private static Paquete mayorPeso(List<Paquete> paquetes, int inicio, int fin) {
+        if (inicio >= fin) {
+            return paquetes.get(inicio);
+        }
+
+        int medio = (inicio + fin) / 2;
+
+        Paquete mayorIzquierdo = mayorPeso(paquetes, inicio, medio);
+        Paquete mayorDerecho = mayorPeso(paquetes, medio, fin);
+
+        if (mayorIzquierdo.getPeso() > mayorDerecho.getPeso()) {
+            return mayorIzquierdo;
+        }
+        return mayorDerecho;
+    }
 }
