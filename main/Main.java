@@ -108,6 +108,21 @@ public class Main {
         intentarAsignar(centro, "PQ214", "R06");   // R06 no disponible
         intentarAsignar(centro, "PQ420", "R01");   // zona distinta
         intentarAsignar(centro, "PQ999", "R01");   // paquete inexistente
+
+        titulo("13. Entregas e historial");
+        String[] entregas = {"PQ926", "PQ105", "PQ583"};
+        for (String codigo : entregas) {
+            Repartidor r = centro.repartidorAsignadoA(codigo);
+            boolean ok = centro.registrarEntrega(codigo);
+            System.out.println("Entrega " + codigo + ": " + ok
+                    + (r != null ? "  (" + r.getIdentificacion() + " disponible: "
+                    + r.isDisponible() + ")" : ""));
+        }
+        System.out.println("Historial (orden real de entrega): " + codigos(centro.getHistorial()));
+        System.out.println("Entregados: " + centro.cantidadEntregados()
+                + " | Pendientes: " + centro.cantidadPendientes());
+        System.out.println("Municipios con pendientes: " + centro.getMunicipiosOrdenados());
+
     }
 
     
