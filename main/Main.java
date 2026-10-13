@@ -132,6 +132,57 @@ public class Main {
         System.out.println("ListaEnlazada<String> tras eliminar Salento: " + palabras
                 + " (tamaño " + palabras.tamanio() + ")");
     }
+    
+    // Datos iniciales
+    private static void cargarRepartidores(CentroDistribucion centro) {
+        centro.registrarRepartidor(new Repartidor("R01", "Ana Gómez", "Armenia", true));
+        centro.registrarRepartidor(new Repartidor("R02", "Luis Rojas", "Armenia", true));
+        centro.registrarRepartidor(new Repartidor("R03", "Marta Díaz", "Calarcá", true));
+        centro.registrarRepartidor(new Repartidor("R04", "Pedro Mora", "Salento", true));
+        centro.registrarRepartidor(new Repartidor("R05", "Laura Ríos", "Montenegro", true));
+        centro.registrarRepartidor(new Repartidor("R06", "Jorge Pineda", "Circasia", false));
+        centro.registrarRepartidor(new Repartidor("R07", "Sofía Cano", "La Tebaida", true));
+    }
+
+    private static void cargarPaquetes(CentroDistribucion centro) {
+        // código, destino, peso (kg), prioridad (1-5), tiempo estimado (min)
+        agregar(centro, "PQ731", "Armenia", 4.5, 5, 45);
+        agregar(centro, "PQ105", "Salento", 3.0, 5, 25);
+        agregar(centro, "PQ942", "Armenia", 2.0, 4, 20);
+        agregar(centro, "PQ318", "Calarcá", 6.0, 2, 35);
+        agregar(centro, "PQ567", "Salento", 1.5, 3, 15);
+        agregar(centro, "PQ829", "Armenia", 9.0, 1, 50);
+        agregar(centro, "PQ420", "Montenegro", 12.0, 3, 30);
+        agregar(centro, "PQ214", "Circasia", 5.5, 4, 40);
+        agregar(centro, "PQ842", "Armenia", 7.2, 2, 28);
+        agregar(centro, "PQ421", "La Tebaida", 3.8, 5, 33);
+        agregar(centro, "PQ650", "Calarcá", 2.4, 3, 22);
+        agregar(centro, "PQ377", "Salento", 8.1, 1, 55);
+        agregar(centro, "PQ908", "Montenegro", 4.0, 4, 18);
+        agregar(centro, "PQ153", "Armenia", 18.7, 3, 42);
+        agregar(centro, "PQ474", "Circasia", 1.2, 5, 12);
+        agregar(centro, "PQ796", "La Tebaida", 6.6, 2, 37);
+        agregar(centro, "PQ261", "Calarcá", 10.3, 4, 48);
+        agregar(centro, "PQ583", "Armenia", 3.3, 5, 26);
+        agregar(centro, "PQ034", "Salento", 2.9, 2, 31);
+        agregar(centro, "PQ715", "Montenegro", 5.0, 1, 44);
+        agregar(centro, "PQ389", "Circasia", 7.7, 3, 29);
+        agregar(centro, "PQ926", "Calarcá", 4.2, 5, 19);
+        agregar(centro, "PQ148", "La Tebaida", 9.4, 4, 52);
+        agregar(centro, "PQ672", "Armenia", 1.8, 1, 14);
+        agregar(centro, "PQ503", "Salento", 11.0, 5, 36);
+        agregar(centro, "PQ859", "Montenegro", 2.2, 3, 23);
+        agregar(centro, "PQ237", "Armenia", 6.1, 4, 38);
+        agregar(centro, "PQ464", "Calarcá", 3.6, 2, 17);
+        agregar(centro, "PQ981", "Circasia", 8.8, 5, 47);
+        agregar(centro, "PQ092", "La Tebaida", 5.9, 3, 27);
+    }
+
+    private static void agregar(CentroDistribucion centro, String codigo, String destino,
+                                double peso, int prioridad, int tiempo) {
+        centro.registrarPaquete(new Paquete(codigo, destino, peso, prioridad, tiempo));
+    }
+
 
     
 
