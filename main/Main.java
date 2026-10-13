@@ -104,7 +104,11 @@ public class Main {
             imprimirAsignacion(centro.asignarPorLlegada());
         }
         System.out.println("Asignaciones activas: " + centro.cantidadAsignaciones());
-
+        titulo("12. Reglas de asignación manual");
+        intentarAsignar(centro, "PQ214", "R06");   // R06 no disponible
+        intentarAsignar(centro, "PQ420", "R01");   // zona distinta
+        intentarAsignar(centro, "PQ999", "R01");   // paquete inexistente
     }
+
     
 }
