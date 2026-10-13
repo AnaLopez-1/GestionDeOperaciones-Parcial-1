@@ -123,7 +123,17 @@ public class Main {
                 + " | Pendientes: " + centro.cantidadPendientes());
         System.out.println("Municipios con pendientes: " + centro.getMunicipiosOrdenados());
 
+        titulo("14. La lista propia es genérica");
+        ListaEnlazada<String> palabras = new ListaEnlazada<>();
+        palabras.agregar("Armenia");
+        palabras.agregar("Salento");
+        palabras.agregar("Calarcá");
+        palabras.eliminar("Salento");
+        System.out.println("ListaEnlazada<String> tras eliminar Salento: " + palabras
+                + " (tamaño " + palabras.tamanio() + ")");
     }
+
+    
 
     
 }
