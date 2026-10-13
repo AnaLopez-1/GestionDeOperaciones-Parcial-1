@@ -65,6 +65,8 @@ public class Main {
         mostrarOrden(centro, "Tiempo (menor):      ", ComparadoresPaquete.POR_TIEMPO_ASC);
         System.out.println("El orden de registro no cambió: "
                 + primeros(centro.pendientesEnOrdenDeRegistro(), 3));
+
+
         titulo("6. Algoritmos recursivos");
         List<Paquete> todos = centro.pendientesEnOrdenDeRegistro();
         System.out.println("Peso total hacia Armenia: "
@@ -75,6 +77,12 @@ public class Main {
                 + Algoritmos.contarConPrioridadMinima(todos, 4));
         System.out.println("Paquetes con prioridad >= 5: "
                 + Algoritmos.contarConPrioridadMinima(todos, 5));
-
+                
+        titulo("7. Búsqueda binaria (sobre copia ordenada por código)");
+        List<Paquete> ordenados = centro.pendientesPorOrdenNatural();
+        System.out.println("Precondición (ordenada por código): "
+                + Algoritmos.estaOrdenadaPorCodigo(ordenados));
+        System.out.println("PQ731 -> posición " + Algoritmos.busquedaBinaria(ordenados, "PQ731"));
+        System.out.println("PQ000 -> posición " + Algoritmos.busquedaBinaria(ordenados, "PQ000"));
     }
 }
