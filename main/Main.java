@@ -65,7 +65,16 @@ public class Main {
         mostrarOrden(centro, "Tiempo (menor):      ", ComparadoresPaquete.POR_TIEMPO_ASC);
         System.out.println("El orden de registro no cambió: "
                 + primeros(centro.pendientesEnOrdenDeRegistro(), 3));
-
+        titulo("6. Algoritmos recursivos");
+        List<Paquete> todos = centro.pendientesEnOrdenDeRegistro();
+        System.out.println("Peso total hacia Armenia: "
+                + String.format("%.1f", Algoritmos.pesoTotalPorMunicipio(todos, "Armenia")) + " kg");
+        System.out.println("Peso total hacia Salento: "
+                + String.format("%.1f", Algoritmos.pesoTotalPorMunicipio(todos, "Salento")) + " kg");
+        System.out.println("Paquetes con prioridad >= 4: "
+                + Algoritmos.contarConPrioridadMinima(todos, 4));
+        System.out.println("Paquetes con prioridad >= 5: "
+                + Algoritmos.contarConPrioridadMinima(todos, 5));
 
     }
 }
