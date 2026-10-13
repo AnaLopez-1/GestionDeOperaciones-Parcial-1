@@ -29,6 +29,13 @@ public class Main {
         for (Repartidor r : centro.getRepartidores()) {
             System.out.println("  " + r);
         }
-        
+    titulo("2. Orden de llegada y consulta por código");
+        System.out.println("Primeros 6 en orden de registro: "
+                + primeros(centro.pendientesEnOrdenDeRegistro(), 6));
+        System.out.println("Consultar PQ731: " + centro.consultar("PQ731"));
+        System.out.println("Consultar PQ000: " + centro.consultar("PQ000")
+                + "  (existe: " + centro.existe("PQ000") + ")");
+
+
     }
 }
