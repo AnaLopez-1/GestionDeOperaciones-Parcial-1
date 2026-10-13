@@ -93,6 +93,18 @@ public class Main {
         System.out.println("Siguiente por orden de llegada: " + centro.siguientePorLlegada());
         System.out.println("Siguiente por prioridad:        " + centro.siguientePrioritario());
         System.out.println("(Circasia no tiene repartidor disponible: R06 está fuera de servicio)");
+
+        titulo("10. Asignación por prioridad (omite los que no tienen repartidor)");
+        for (int i = 0; i < 6; i++) {
+            imprimirAsignacion(centro.asignarPorPrioridad());
+        }
+
+        titulo("11. Asignación por orden de llegada");
+        for (int i = 0; i < 3; i++) {
+            imprimirAsignacion(centro.asignarPorLlegada());
+        }
+        System.out.println("Asignaciones activas: " + centro.cantidadAsignaciones());
+
     }
     
 }
