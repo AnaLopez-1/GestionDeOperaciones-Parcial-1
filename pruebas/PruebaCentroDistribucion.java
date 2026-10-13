@@ -96,5 +96,35 @@ public class PruebaCentroDistribucion {
                         .equals("PQ731 PQ105 PQ942 PQ567 PQ318 PQ829"));
         verificar("ordenar no altera el orden de registro",
                 codigos(c.pendientesEnOrdenDeRegistro()).equals("PQ731 PQ105 PQ942 PQ318 PQ567 PQ829"));
-}    
-}
+
+      // Entregas e historial 
+        verificar("entrega: PQ105", c.registrarEntrega("PQ105")); 
+        verificar("entrega: PQ942", c.registrarEntrega("PQ942")); 
+        verificar("entrega: PQ731", c.registrarEntrega("PQ731")); 
+        
+        verificar("historial conserva el orden de entrega", 
+                codigos(c.getHistorial()).equals("PQ105 PQ942 PQ731"));
+        verificar("entregados = 3, pendientes = 3", 
+                c.cantidadEntregados() == 3 && c.cantidadPendientes() == 3);
+        verificar("pendientes restantes en orden de registro", 
+                codigos(c.pendientesEnOrdenDeRegistro()).equals("PQ318 PQ567 PQ829"));
+        verificar("entregado ya no se consulta", c.consultar("PQ105") == null); 
+        verificar("entregar de nuevo devuelve false", !c.registrarEntrega("PQ105")); 
+        try {
+            c.registrarPaquete(new Paquete("PQ105", "Armenia", 1.0, 1, 1)); 
+            verificar("codigo entregado no se puede reutilizar", false); 
+        } catch (IllegalArgumentException e) { 
+            verificar("codigo entregado no se puede reutilizar", true); 
+        }
+        verificar("Armenia solo conserva PQ829", 
+                codigos(c.paquetesDeMunicipio("Armenia")).equals("PQ829"));
+        verificar("el entregado salio de la cola de llegada", 
+                c.siguientePorLlegada().getCodigo().equals("PQ318"));
+
+        verificar("entrega: PQ567 (ultimo de Salento)", c.registrarEntrega("PQ567")); 
+        verificar("Salento desaparece de los municipios", 
+                texto(c.getMunicipiosOrdenados()).equals("Armenia, Calarcá")
+                        && c.getMunicipios().size() == 2);
+
+
+}}
