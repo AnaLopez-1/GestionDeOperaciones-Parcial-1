@@ -128,6 +128,13 @@ public class PruebaAsignacion {
                 c.asignarPorLlegada() == null && c.asignarPorPrioridad() == null); 
         verificar("4 asignaciones activas", c.cantidadAsignaciones() == 4); 
 
-    }
+    //ENTREGAR UN PAQUETE QUE NUNCA FUE ASIGNADO (PQ999) DEVUELVE FALSE, PERO NO AFECTA A LOS DEMAS
+        CentroDistribucion otro = new CentroDistribucion();
+        otro.registrarPaquete(new Paquete("PQ010", "Armenia", 1.0, 3, 10)); //Registra un paquete PQ010 en el centro de distribución "otro"
+        verificar("entrega de un paquete sin repartidor funciona", otro.registrarEntrega("PQ010"));
 
+        System.out.println();
+        System.out.println(fallos == 0 ? "Todas las pruebas pasaron."
+                                    : "Pruebas fallidas: " + fallos);
+    }
 }
