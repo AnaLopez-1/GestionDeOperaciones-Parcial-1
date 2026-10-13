@@ -34,7 +34,7 @@ public class PruebaCentroDistribucion {
         return sb.toString();
     }
     public static void main(String[] args) {
-
+        // Registro, consulta, municipios y ordenamientos 
         CentroDistribucion c = new CentroDistribucion();
         c.registrarPaquete(new Paquete("PQ731", "Armenia", 4.5, 5, 45));
         c.registrarPaquete(new Paquete("PQ105", "Salento", 3.0, 5, 25));
@@ -58,32 +58,17 @@ public class PruebaCentroDistribucion {
         verificar("consulta: existe PQ942", c.existe("PQ942"));
         verificar("consulta: PQ942 va a Armenia", c.consultar("PQ942").getDestino().equals("Armenia"));
         verificar("consulta: PQ000 no existe", c.consultar("PQ000") == null && !c.existe("PQ000"));
-
-        System.out.println();
-        System.out.println(fallos == 0 ? "Todas las pruebas pasaron."
-                                    : "Pruebas fallidas: " + fallos);
-    }
-        private static String texto(Iterable<String> elementos) {
-        StringBuilder sb = new StringBuilder();
-        for (String e : elementos) {
-            if (sb.length() > 0) {
-                sb.append(", ");
-            }
-            sb.append(e);
-        }
-        return sb.toString();
-    
-            verificar("municipios: 3 sin repetir", c.getMunicipios().size() == 3);
-        verificar("municipios ordenados: Armenia, Calarcá, Salento",
+        verificar("municipios: 3 sin repetir", c.getMunicipios().size() == 3); 
+        verificar("municipios ordenados: Armenia, Calarcá, Salento", 
                 texto(c.getMunicipiosOrdenados()).equals("Armenia, Calarcá, Salento"));
         verificar("agrupacion: Armenia -> PQ731 PQ942 PQ829",
                 codigos(c.paquetesDeMunicipio("Armenia")).equals("PQ731 PQ942 PQ829"));
         verificar("agrupacion: Salento -> PQ105 PQ567",
                 codigos(c.paquetesDeMunicipio("Salento")).equals("PQ105 PQ567"));
-        verificar("agrupacion: municipio sin paquetes -> vacio",
+        verificar("agrupacion: municipio sin paquetes -> vacio", 
                 c.paquetesDeMunicipio("Montenegro").isEmpty());
 
-        verificar("orden natural (codigo)",
+        verificar("orden natural (codigo)", 
                 codigos(c.pendientesPorOrdenNatural()).equals("PQ105 PQ318 PQ567 PQ731 PQ829 PQ942"));
         verificar("por peso desc",
                 codigos(c.pendientesOrdenadosPor(ComparadoresPaquete.POR_PESO_DESC))
@@ -91,11 +76,12 @@ public class PruebaCentroDistribucion {
         verificar("por tiempo asc",
                 codigos(c.pendientesOrdenadosPor(ComparadoresPaquete.POR_TIEMPO_ASC))
                         .equals("PQ567 PQ942 PQ105 PQ318 PQ731 PQ829"));
-        verificar("por prioridad desc",
+        verificar("por prioridad desc", 
                 codigos(c.pendientesOrdenadosPor(ComparadoresPaquete.POR_PRIORIDAD_DESC))
                         .equals("PQ731 PQ105 PQ942 PQ567 PQ318 PQ829"));
-        verificar("ordenar no altera el orden de registro",
+        verificar("ordenar no altera el orden de registro", 
                 codigos(c.pendientesEnOrdenDeRegistro()).equals("PQ731 PQ105 PQ942 PQ318 PQ567 PQ829"));
+    
 
       // Entregas e historial 
         verificar("entrega: PQ105", c.registrarEntrega("PQ105")); 
@@ -125,6 +111,7 @@ public class PruebaCentroDistribucion {
         verificar("Salento desaparece de los municipios", 
                 texto(c.getMunicipiosOrdenados()).equals("Armenia, Calarcá")
                         && c.getMunicipios().size() == 2);
+
     //Despacho por orden de llegada
                 CentroDistribucion fifo = new CentroDistribucion();
         fifo.registrarPaquete(new Paquete("PQ731", "Armenia", 4.5, 5, 45));
@@ -139,6 +126,7 @@ public class PruebaCentroDistribucion {
         verificar("llegada: PQ731 PQ105 PQ942 PQ318",
                 salida.toString().trim().equals("PQ731 PQ105 PQ942 PQ318"));
 
+        // Despacho prioritario (ejemplo del enunciado) 
         CentroDistribucion prio = new CentroDistribucion();
         prio.registrarPaquete(new Paquete("PQ420", "Armenia", 2.0, 3, 30));
         prio.registrarPaquete(new Paquete("PQ731", "Armenia", 2.0, 5, 45));
@@ -151,4 +139,23 @@ public class PruebaCentroDistribucion {
         verificar("prioridad: PQ105 PQ731 PQ942 PQ420",
                 salida.toString().trim().equals("PQ105 PQ731 PQ942 PQ420"));
         verificar("prioridad: sin paquetes devuelve null", prio.despacharPorPrioridad() == null);
-}}
+
+        // Las dos modalidades conviven sin despachar dos veces
+        CentroDistribucion mixto = new CentroDistribucion(); 
+        mixto.registrarPaquete(new Paquete("PQ001", "Armenia", 1.0, 1, 10)); 
+        mixto.registrarPaquete(new Paquete("PQ002", "Armenia", 1.0, 5, 10)); 
+        mixto.registrarPaquete(new Paquete("PQ003", "Armenia", 1.0, 3, 10));
+        verificar("mixto: prioritario es PQ002", 
+                mixto.despacharPorPrioridad().getCodigo().equals("PQ002"));
+        verificar("mixto: por llegada sigue PQ001 (no repite PQ002)", 
+                mixto.despacharPorLlegada().getCodigo().equals("PQ001"));
+        verificar("mixto: luego PQ003", mixto.despacharPorLlegada().getCodigo().equals("PQ003")); 
+        verificar("mixto: despachado sigue pendiente hasta su entrega", 
+                mixto.cantidadPendientes() == 3 && mixto.consultar("PQ002") != null);
+        verificar("mixto: se puede entregar uno ya despachado", mixto.registrarEntrega("PQ002")); 
+
+        System.out.println(); 
+        System.out.println(fallos == 0 ? "Todas las pruebas pasaron." 
+        : "Pruebas fallidas: " + fallos); 
+    }
+}
