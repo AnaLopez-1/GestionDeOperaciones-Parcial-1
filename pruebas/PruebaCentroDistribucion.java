@@ -125,6 +125,30 @@ public class PruebaCentroDistribucion {
         verificar("Salento desaparece de los municipios", 
                 texto(c.getMunicipiosOrdenados()).equals("Armenia, Calarcá")
                         && c.getMunicipios().size() == 2);
+    //Despacho por orden de llegada
+                CentroDistribucion fifo = new CentroDistribucion();
+        fifo.registrarPaquete(new Paquete("PQ731", "Armenia", 4.5, 5, 45));
+        fifo.registrarPaquete(new Paquete("PQ105", "Salento", 3.0, 5, 25));
+        fifo.registrarPaquete(new Paquete("PQ942", "Armenia", 2.0, 4, 20));
+        fifo.registrarPaquete(new Paquete("PQ318", "Calarcá", 6.0, 2, 35));
+        StringBuilder salida = new StringBuilder();
+        Paquete p;
+        while ((p = fifo.despacharPorLlegada()) != null) {
+            salida.append(p.getCodigo()).append(' ');
+        }
+        verificar("llegada: PQ731 PQ105 PQ942 PQ318",
+                salida.toString().trim().equals("PQ731 PQ105 PQ942 PQ318"));
 
-
+        CentroDistribucion prio = new CentroDistribucion();
+        prio.registrarPaquete(new Paquete("PQ420", "Armenia", 2.0, 3, 30));
+        prio.registrarPaquete(new Paquete("PQ731", "Armenia", 2.0, 5, 45));
+        prio.registrarPaquete(new Paquete("PQ105", "Armenia", 2.0, 5, 25));
+        prio.registrarPaquete(new Paquete("PQ942", "Armenia", 2.0, 4, 20));
+        salida = new StringBuilder();
+        while ((p = prio.despacharPorPrioridad()) != null) {
+            salida.append(p.getCodigo()).append(' ');
+        }
+        verificar("prioridad: PQ105 PQ731 PQ942 PQ420",
+                salida.toString().trim().equals("PQ105 PQ731 PQ942 PQ420"));
+        verificar("prioridad: sin paquetes devuelve null", prio.despacharPorPrioridad() == null);
 }}
