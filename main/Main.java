@@ -88,6 +88,11 @@ public class Main {
         titulo("8. Divide y vencerás: paquete de mayor peso");
         Paquete pesado = Algoritmos.paqueteMayorPeso(todos);
         System.out.println("Mayor peso: " + pesado);
+
+        titulo("9. Atención: siguiente en cada modalidad");
+        System.out.println("Siguiente por orden de llegada: " + centro.siguientePorLlegada());
+        System.out.println("Siguiente por prioridad:        " + centro.siguientePrioritario());
+        System.out.println("(Circasia no tiene repartidor disponible: R06 está fuera de servicio)");
     }
     
 }
