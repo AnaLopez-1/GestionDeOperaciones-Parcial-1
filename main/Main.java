@@ -77,12 +77,17 @@ public class Main {
                 + Algoritmos.contarConPrioridadMinima(todos, 4));
         System.out.println("Paquetes con prioridad >= 5: "
                 + Algoritmos.contarConPrioridadMinima(todos, 5));
-                
+
         titulo("7. Búsqueda binaria (sobre copia ordenada por código)");
         List<Paquete> ordenados = centro.pendientesPorOrdenNatural();
         System.out.println("Precondición (ordenada por código): "
                 + Algoritmos.estaOrdenadaPorCodigo(ordenados));
         System.out.println("PQ731 -> posición " + Algoritmos.busquedaBinaria(ordenados, "PQ731"));
         System.out.println("PQ000 -> posición " + Algoritmos.busquedaBinaria(ordenados, "PQ000"));
+
+        titulo("8. Divide y vencerás: paquete de mayor peso");
+        Paquete pesado = Algoritmos.paqueteMayorPeso(todos);
+        System.out.println("Mayor peso: " + pesado);
     }
+    
 }
