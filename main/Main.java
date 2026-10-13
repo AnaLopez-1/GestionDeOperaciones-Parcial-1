@@ -1,3 +1,5 @@
+package main;
+
 import algoritmos.Algoritmos;
 import estructuras.ListaEnlazada;
 import modelo.Asignacion;
@@ -237,10 +239,4 @@ public class Main {
             System.out.println("Rechazado (" + codigo + " -> " + repartidor + "): " + e.getMessage());
         }
     }
-}
-
-
-    
-
-    
 }
