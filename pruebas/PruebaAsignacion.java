@@ -77,20 +77,64 @@ public class PruebaAsignacion {
     //ASIGNACION AUTOMATICA POR LLEGADA
         Asignacion a = c.asignarPorLlegada();
         verificar("llegada: PQ001 va a R1 (primer repartidor libre de Armenia)", 
+                a != null && a.getPaquete().getCodigo().equals("PQ001")
+                        && a.getRepartidor().getIdentificacion().equals("R1"));
         verificar("llegada: R1 queda no disponible", !c.consultarRepartidor("R1").isDisponible());
         verificar("llegada: repartidorAsignadoA(PQ001) = R1",
                 c.repartidorAsignadoA("PQ001") == c.consultarRepartidor("R1"));
         verificar("llegada: PQ001 salio de la cola, el siguiente es PQ002",
                 c.siguientePorLlegada().getCodigo().equals("PQ002"));
 
-        a = c.asignarPorLlegada();  
+        a = c.asignarPorLlegada();   // PQ002 (Salento) no tiene repartidor libre: se omite
         verificar("llegada: se omite PQ002 (Salento sin repartidor) y se asigna PQ003 a R4",
                 a != null && a.getPaquete().getCodigo().equals("PQ003")
                         && a.getRepartidor().getIdentificacion().equals("R4"));
         verificar("llegada: el omitido PQ002 conserva su lugar",
                 c.siguientePorLlegada().getCodigo().equals("PQ002"));
 
+    //ASIGNACION AUTOMATICA POR PRIORIDAD
+        a = c.asignarPorPrioridad();
+        verificar("prioridad: se omite PQ002 y PQ004 va a R2 (R1 esta ocupado)", 
+                a != null && a.getPaquete().getCodigo().equals("PQ004") 
+                        && a.getRepartidor().getIdentificacion().equals("R2"));
+        a = c.asignarPorPrioridad();
+        verificar("prioridad: sin repartidores libres devuelve null", a == null);
+        verificar("prioridad: tras el intento fallido nada cambio",
+                c.cantidadAsignaciones() == 3
+                        && c.siguientePrioritario().getCodigo().equals("PQ002"));
 
+        try {
+            c.asignar("PQ001", "R2"); 
+            verificar("manual: paquete ya asignado se rechaza", false);
+        } catch (IllegalStateException e) {
+            verificar("manual: paquete ya asignado se rechaza", true);
+        }
+    //LA ENTREGA DE UN PAQUETE LIBERA AL REPARTIDOR Y PERMITE ASIGNAR OTRO PAQUETE
+        verificar("entrega: PQ001", c.registrarEntrega("PQ001"));
+        verificar("entrega: R1 vuelve a estar disponible", c.consultarRepartidor("R1").isDisponible());
+        verificar("entrega: PQ001 ya no tiene repartidor", c.repartidorAsignadoA("PQ001") == null);
+        a = c.asignarPorPrioridad();
+        verificar("prioridad: ahora PQ005 va a R1",
+                a != null && a.getPaquete().getCodigo().equals("PQ005")
+                        && a.getRepartidor().getIdentificacion().equals("R1"));
+
+    //REPARTIDOR VUELVE A ESTAR DISPONIBLE Y SE ASIGNA EL PAQUETE QUE ESTABA BLOQUEADO
+        c.consultarRepartidor("R3").setDisponible(true); 
+        a = c.asignarPorLlegada(); 
+        verificar("llegada: con R3 disponible, PQ002 se asigna a R3",
+                a != null && a.getPaquete().getCodigo().equals("PQ002") 
+                        && a.getRepartidor().getIdentificacion().equals("R3"));
+        verificar("ya no quedan paquetes por asignar",
+                c.asignarPorLlegada() == null && c.asignarPorPrioridad() == null); 
+        verificar("4 asignaciones activas", c.cantidadAsignaciones() == 4); 
+
+    //ENTREGAR UN PAQUETE QUE NUNCA FUE ASIGNADO (PQ999) DEVUELVE FALSE, PERO NO AFECTA A LOS DEMAS
+        CentroDistribucion otro = new CentroDistribucion();
+        otro.registrarPaquete(new Paquete("PQ010", "Armenia", 1.0, 3, 10)); //Registra un paquete PQ010 en el centro de distribución "otro"
+        verificar("entrega de un paquete sin repartidor funciona", otro.registrarEntrega("PQ010"));
+
+        System.out.println();
+        System.out.println(fallos == 0 ? "Todas las pruebas pasaron."
+                                    : "Pruebas fallidas: " + fallos);
     }
-
 }
