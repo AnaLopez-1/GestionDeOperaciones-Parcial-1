@@ -182,6 +182,62 @@ public class Main {
                                 double peso, int prioridad, int tiempo) {
         centro.registrarPaquete(new Paquete(codigo, destino, peso, prioridad, tiempo));
     }
+    
+    // Utilidades de impresión
+    
+    private static void titulo(String texto) {
+        System.out.println();
+        System.out.println("=== " + texto + " ===");
+    }
+
+    private static String codigos(Iterable<Paquete> paquetes) {
+        StringBuilder sb = new StringBuilder();
+        for (Paquete p : paquetes) {
+            if (sb.length() > 0) {
+                sb.append(", ");
+            }
+            sb.append(p.getCodigo());
+        }
+        return sb.toString();
+    }
+
+    private static String primeros(List<Paquete> paquetes, int cantidad) {
+        List<Paquete> parte = new ArrayList<>();
+        for (int i = 0; i < cantidad && i < paquetes.size(); i++) {
+            parte.add(paquetes.get(i));
+        }
+        return codigos(parte);
+    }
+
+    private static void mostrarOrden(CentroDistribucion centro, String etiqueta,
+    Comparator<Paquete> criterio) {
+        System.out.println(etiqueta + primeros(centro.pendientesOrdenadosPor(criterio), 5));
+    }
+
+    private static void intentarRegistrar(CentroDistribucion centro, String motivo, String codigo,
+    String destino, double peso, int prioridad, int tiempo) {
+        try {
+            centro.registrarPaquete(new Paquete(codigo, destino, peso, prioridad, tiempo));
+            System.out.println("Aceptado (" + motivo + "): " + codigo);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Rechazado (" + motivo + "): " + e.getMessage());
+        }
+    }
+
+    private static void imprimirAsignacion(Asignacion asignacion) {
+        System.out.println(asignacion == null
+                ? "Sin paquetes asignables en este momento"
+                : "Asignado: " + asignacion);
+    }
+
+    private static void intentarAsignar(CentroDistribucion centro, String codigo, String repartidor) {
+        try {
+            System.out.println("Asignado: " + centro.asignar(codigo, repartidor));
+        } catch (IllegalStateException | IllegalArgumentException e) {
+            System.out.println("Rechazado (" + codigo + " -> " + repartidor + "): " + e.getMessage());
+        }
+    }
+}
 
 
     
