@@ -63,4 +63,38 @@ public class PruebaCentroDistribucion {
         System.out.println(fallos == 0 ? "Todas las pruebas pasaron."
                                     : "Pruebas fallidas: " + fallos);
     }
+        private static String texto(Iterable<String> elementos) {
+        StringBuilder sb = new StringBuilder();
+        for (String e : elementos) {
+            if (sb.length() > 0) {
+                sb.append(", ");
+            }
+            sb.append(e);
+        }
+        return sb.toString();
+    
+            verificar("municipios: 3 sin repetir", c.getMunicipios().size() == 3);
+        verificar("municipios ordenados: Armenia, Calarcá, Salento",
+                texto(c.getMunicipiosOrdenados()).equals("Armenia, Calarcá, Salento"));
+        verificar("agrupacion: Armenia -> PQ731 PQ942 PQ829",
+                codigos(c.paquetesDeMunicipio("Armenia")).equals("PQ731 PQ942 PQ829"));
+        verificar("agrupacion: Salento -> PQ105 PQ567",
+                codigos(c.paquetesDeMunicipio("Salento")).equals("PQ105 PQ567"));
+        verificar("agrupacion: municipio sin paquetes -> vacio",
+                c.paquetesDeMunicipio("Montenegro").isEmpty());
+
+        verificar("orden natural (codigo)",
+                codigos(c.pendientesPorOrdenNatural()).equals("PQ105 PQ318 PQ567 PQ731 PQ829 PQ942"));
+        verificar("por peso desc",
+                codigos(c.pendientesOrdenadosPor(ComparadoresPaquete.POR_PESO_DESC))
+                        .equals("PQ829 PQ318 PQ731 PQ105 PQ942 PQ567"));
+        verificar("por tiempo asc",
+                codigos(c.pendientesOrdenadosPor(ComparadoresPaquete.POR_TIEMPO_ASC))
+                        .equals("PQ567 PQ942 PQ105 PQ318 PQ731 PQ829"));
+        verificar("por prioridad desc",
+                codigos(c.pendientesOrdenadosPor(ComparadoresPaquete.POR_PRIORIDAD_DESC))
+                        .equals("PQ731 PQ105 PQ942 PQ567 PQ318 PQ829"));
+        verificar("ordenar no altera el orden de registro",
+                codigos(c.pendientesEnOrdenDeRegistro()).equals("PQ731 PQ105 PQ942 PQ318 PQ567 PQ829"));
 }    
+}
