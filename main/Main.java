@@ -56,6 +56,16 @@ public class Main {
             System.out.println("  " + municipio + " -> "
                     + codigos(centro.paquetesDeMunicipio(municipio)));
         }
+        
+        titulo("5. Ordenamientos (primeros 5 de cada uno)");
+        System.out.println("Natural (código):     "
+                + primeros(centro.pendientesPorOrdenNatural(), 5));
+        mostrarOrden(centro, "Prioridad (mayor):   ", ComparadoresPaquete.POR_PRIORIDAD_DESC);
+        mostrarOrden(centro, "Peso (mayor):        ", ComparadoresPaquete.POR_PESO_DESC);
+        mostrarOrden(centro, "Tiempo (menor):      ", ComparadoresPaquete.POR_TIEMPO_ASC);
+        System.out.println("El orden de registro no cambió: "
+                + primeros(centro.pendientesEnOrdenDeRegistro(), 3));
+
 
     }
 }
